@@ -1,0 +1,18 @@
+#!/bin/bash
+GRAPHILE_USER=learn_postgraphile; \
+GRAPHILE_PASS=secret_password; \
+OWNER_USER=USER; \
+OWNER_PASS=PASS;
+DATABASE=learn_dev;
+CONNECTION=127.0.0.1:5432 ; \
+npx postgraphile \
+    -c postgres://$GRAPHILE_USER:$GRAPHILE_PASS@$CONNECTION/$DATABASE \
+    --schema learn \
+    --append-plugins @graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter \
+    --enhance-graphiql \
+    --allow-explain \
+    --watch \
+    --owner-connection postgres://$OWNER_USER:$OWNER_PASS@$CONNECTION/$DATABASE \
+    --default-role learn_anonymous \
+    --jwt-token-identifier learn.jwt \
+    --jwt-secret for_jwts
